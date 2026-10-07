@@ -1,0 +1,75 @@
+== 1. Core shortest-path correctness ==
+  PASS  Dijkstra (binary heap): A→C cost 2.0 via B
+  PASS  A* (straight-line heuristic): A→C cost 2.0 via B
+  PASS  Bellman-Ford: A→C cost 2.0 via B
+  PASS  Dijkstra (array, O(V²)): A→C cost 2.0 via B
+== 2. Edge / worst cases ==
+  PASS  source == destination → cost 0, single-node path
+  PASS  isolated destination → graceful 'not found'
+  PASS  unreachable search settles only its own component
+  PASS  invalid node id rejected
+  PASS  negative node id rejected
+  PASS  negative distance rejected at insert
+  PASS  zero distance rejected
+  PASS  self-loop rejected
+  PASS  negative reachability budget rejected
+  PASS  congestion clamped to 0.95 (speed never 0 → no ∞/NaN times)
+  PASS  empty network counts as connected (no crash)
+  PASS  empty network: no bottlenecks (no crash)
+  PASS  parallel roads: cheaper one chosen
+  PASS  parallel roads: NOT reported as a bridge
+== 3. Constrained routing ==
+  PASS  excluding Secondary forces A→D→C (3.0)
+  PASS  result contains no excluded road type
+  PASS  blocked node B is avoided (A*)
+  PASS  closed road (B–C) is avoided
+  PASS  constraints that disconnect → 'not found', no crash
+  PASS  blocked destination → 'not found'
+  PASS  blocked source → 'not found'
+  PASS  one-way respected: X→Y = 1
+  PASS  one-way respected: Y→X must detour = 4
+== 4. Metrics & dynamic congestion ==
+  PASS  free-flow: short route is fastest
+  PASS  live congestion update re-routes to highway
+  PASS  returned route's time is a snapshot (not re-priced by later updates)
+  PASS  distance metric ignores congestion
+  PASS  weighted α=1 equals distance
+  PASS  weighted α=0 equals time
+  PASS  avoid-congestion constraint bypasses jammed road
+== 5. Cross-validation on 2,500-node synthetic city (300 random queries × 3 metrics) ==
+  PASS  A* optimal cost == Dijkstra on all 300 queries
+  PASS  Bellman-Ford == Dijkstra (30 queries)
+  PASS  Array-Dijkstra == heap Dijkstra (30 queries)
+  PASS  A* never settles more nodes than Dijkstra
+== 6. Reachability ==
+  PASS  budget 0 → only the source
+  PASS  monotonic: 5-min set ⊆ 10-min set
+  PASS  every reported cost ≤ budget
+  PASS  bounded-Dijkstra costs == full Dijkstra costs
+  PASS  no node within budget is missed
+  PASS  BFS-by-hops ≠ time budget (why BFS is wrong for weighted budgets)
+== 7. Connectivity & bottlenecks ==
+  PASS  BFS and DFS agree on connectivity
+  PASS  isolated node E → network not connected
+  PASS  component count = 2 (A-B-C-D, E)
+  PASS  one-way X→Y network: strongly connected via detour
+  PASS  chain a-b-c: b is articulation point, 2 bridges
+  PASS  ring road: no single point of failure
+  PASS  Tarjan APs, bridges AND impact scores == brute-force oracle on 40 random graphs
+== 8. Scale / stack-safety worst case ==
+  PASS  300,000-node chain: iterative DFS/Tarjan, no stack overflow
+  PASS  300,000-segment shortest path found
+== 9. Dataset loading ==
+  PASS  OSM Colombo loads: 43,744 nodes, 98,233 directed edges, 0 bad rows
+  PASS  OSM: every edge length ≥ straight-line distance (A* admissible on real data)
+  PASS  OSM: no self-loops survive cleaning
+  PASS  A* == Dijkstra on 120 real Colombo queries
+  PASS  OSM parser: u→v + v→u rows merged into ONE two-way road
+  PASS  OSM parser: quoted names with commas and tag lists parsed
+  PASS  OSM parser: bridge=yes → Bridge, one-way kept one-way
+  PASS  OSM parser: self-loop removed, unknown node skipped
+  PASS  OSM parser: length shorter than straight line is raised
+  PASS  generic CSV: malformed rows skipped with warnings, valid row kept
+  PASS  missing dataset file → clear error
+
+RESULT: 64 passed, 0 failed

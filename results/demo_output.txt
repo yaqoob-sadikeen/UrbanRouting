@@ -1,0 +1,96 @@
+
+━━ Network: Colombo District drivable roads (OpenStreetMap via OSMnx) ━━
+Loaded in 902 ms: 43,744 junctions, 51,078 roads, 98,233 directed edges, avg out-degree 2.25
+Cleaning: 206 self-loops removed · 47,155 reverse rows merged into two-way roads · 3,923 one-way roads · 9,055 lengths raised to straight-line · 0 bad rows
+  Highway           31 directed edges
+  Arterial      11,051 directed edges
+  Secondary      9,855 directed edges
+  Residential   76,564 directed edges
+  Bridge           732 directed edges
+Landmarks snapped to nearest main-road junction:
+  Colombo Fort         → node 13570 (30 m away)
+  National Hospital    → node  9957 (113 m away)
+  Town Hall            → node  4245 (30 m away)
+  Borella Junction     → node  5958 (19 m away)
+  Narahenpita          → node 34541 (16 m away)
+  Kalubowila Hospital  → node   125 (52 m away)
+  Mount Lavinia        → node   911 (407 m away)
+  Moratuwa             → node  5683 (100 m away)
+  Malabe               → node 20861 (69 m away)
+  Homagama             → node 13249 (174 m away)
+  Mattakkuliya         → node  2269 (33 m away)
+
+━━ 1. Optimal path: Moratuwa → National Hospital ━━
+Metric = Distance
+  Dijkstra                            18.53 km   35.0 min  262 segs  settled 24,434  [Dijkstra (binary heap)]
+  A*                                  18.53 km   35.0 min  262 segs  settled  6,829  [A* (straight-line heuristic)]
+  same cost: True; A* settled 28% of Dijkstra's nodes
+Metric = Time
+  Dijkstra                            18.96 km   34.5 min  297 segs  settled 21,382  [Dijkstra (binary heap)]
+  A*                                  18.96 km   34.5 min  297 segs  settled 16,579  [A* (straight-line heuristic)]
+  same cost: True; A* settled 78% of Dijkstra's nodes
+      via Galle Road (15.0 km) → Srimath Anagarika Dharmapala Mawatha (1.7 km) → Galle Road New Deviation (0.8 km) → De Saram Place (0.2 km)
+Metric = Weighted(α=0.50)
+  Dijkstra                            18.96 km   34.5 min  297 segs  settled 22,201  [Dijkstra (binary heap)]
+  A*                                  18.96 km   34.5 min  297 segs  settled 12,665  [A* (straight-line heuristic)]
+  same cost: True; A* settled 57% of Dijkstra's nodes
+
+━━ 2. Constrained routing ━━
+Colombo Fort → Narahenpita
+  car                                  7.14 km   13.8 min  107 segs  settled  4,418  [Dijkstra (binary heap)]
+    residential share of car route: 3 %
+  heavy vehicle (no residential)       7.89 km   14.0 min   96 segs  settled  2,326  [Dijkstra (binary heap)]
+Colombo Fort → Malabe
+  car                                 15.20 km   27.6 min  210 segs  settled 18,028  [Dijkstra (binary heap)]
+    residential share of car route: 4 %
+  heavy vehicle (no residential)      16.00 km   27.9 min  222 segs  settled  5,971  [Dijkstra (binary heap)]
+Mount Lavinia → Kalubowila Hospital
+  car                                  4.24 km    8.8 min   70 segs  settled  3,120  [Dijkstra (binary heap)]
+    residential share of car route: 9 %
+  heavy vehicle (no residential)       4.32 km    8.9 min   75 segs  settled    806  [Dijkstra (binary heap)]
+Incident: 96 junctions within 400 m of Borella Junction closed
+  Fort → Malabe, normal               15.20 km   27.6 min  210 segs  settled 18,028  [Dijkstra (binary heap)]
+  Fort → Malabe, Borella zone closed  15.51 km   28.3 min  229 segs  settled 18,316  [Dijkstra (binary heap)]
+Edge case — avoid every road with congestion > 0.5 (all arterials), but Fort itself sits on an arterial:
+  Fort → Malabe                      NO ROUTE — destination unreachable under current constraints
+
+━━ 3. Live congestion: every 'Galle Road' segment jams to 0.95 ━━
+  452 Galle Road edges updated (O(1) each)
+  before jam                          19.36 km   35.6 min  289 segs  settled 22,813  [Dijkstra (binary heap)]
+    Galle Road km on route: 16.1
+  old route if still driven now: 62.5 min
+  after jam (re-routed)               22.46 km   47.5 min  318 segs  settled 33,792  [Dijkstra (binary heap)]
+    Galle Road km on route: 0.2
+      via Attidiya Road (3.8 km) → Sri Sambuddhatwa Jayanthi Mawatha (Havelock Road) (2.1 km) → Sea Beach Road/Sri Gnanendra Road (1.9 km) → Puranappu Raja Mawatha (1.7 km)
+
+━━ 4. Reachability: emergency depot at Town Hall (time budget, peak congestion) ━━
+  ≤ 3 min:    591 junctions ( 1.4% of district)  National Hospital 1.3
+  ≤ 5 min:  1,459 junctions ( 3.3% of district)  National Hospital 1.3
+  ≤ 8 min:  3,555 junctions ( 8.1% of district)  National Hospital 1.3
+  ≤12 min:  6,835 junctions (15.6% of district)  National Hospital 1.3
+  ≤20 min: 15,910 junctions (36.4% of district)  National Hospital 1.3, Kalubowila Hospital 12.7
+  BFS ≤49 hops gives 3,623 junctions (similar size to the 8-min set), but only 90% of them are truly ≤8 min → hops ≠ minutes
+  worst BFS-included junction actually needs 16.6 min
+
+━━ 5. Connectivity ━━
+  Weakly connected: True (BFS) / True (DFS), 1 component(s)
+  Strongly connected: False — 37 junctions cannot be reached from the rest, 19 cannot get back out
+  e.g. junction at (6.7804, 79.9800): in-roads 0, out-roads 2 — one-way streets clipped at the district boundary
+
+━━ 6. Critical infrastructure (Tarjan) ━━
+  15,720 articulation points, 18,922 bridges in 61 ms
+  cutting off ≥1 node: all of them; ≥10 nodes: 542 APs, 381 bridges; ≥50: 23 APs, 18 bridges
+  Top critical roads (bridges) by junctions isolated:
+    • High Level Road              Arterial    at (6.9428, 80.1970) isolates 484
+    • Mattakkuliya Church Road     Secondary   at (6.9739, 79.8787) isolates 86
+    • Mattakkuliya Church Road     Secondary   at (6.9751, 79.8795) isolates 82
+    • Dampe Road                   Secondary   at (6.8150, 80.0496) isolates 73
+    • Dampe Road                   Secondary   at (6.8118, 80.0495) isolates 71
+    • Malagala Road                Secondary   at (6.8165, 80.0956) isolates 70
+  Proof — close that Mattakkuliya road, then route Fort → the cut-off side:
+    open                               6.98 km   14.3 min   71 segs  settled  4,860  [Dijkstra (binary heap)]
+    closed                           NO ROUTE — destination unreachable under current constraints
+
+━━ 7. A* vs Dijkstra on 300 random origin–destination pairs ━━
+  Distance : 300 routable, cost mismatches 0; A* settles 27% of Dijkstra's nodes; mean time Dijkstra 15.58 ms vs A* 4.74 ms
+  Time     : 300 routable, cost mismatches 0; A* settles 80% of Dijkstra's nodes; mean time Dijkstra 13.13 ms vs A* 10.97 ms

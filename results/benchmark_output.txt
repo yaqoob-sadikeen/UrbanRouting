@@ -1,0 +1,60 @@
+
+[0] REAL Colombo sub-networks grown from Colombo Fort
+       V        E    Dij-d     A*-d    Dij-t     A*-t       BF   set D  set A*   Tarjan     MB
+    1000     1981     0.24     0.14     0.24     0.20      3.8     430     201      0.5    0.5
+    2500     5341     0.96     0.49     0.96     0.81      8.1    1591     646      1.9    1.2
+    5000    10853     1.89     0.54     1.73     1.37     24.6    2495     624      2.2    2.5
+   10000    21796     3.17     0.80     2.81     2.49     76.5    5154    1362     10.4    5.0
+   20000    44132     5.06     1.85     5.58     4.20    137.8   10162    2943      9.1   10.0
+   43744    98233    14.93     4.00    14.75    12.12        -   26237    6872     22.4   21.7
+
+CSV results written to /home/claude/UrbanRouting/results
+
+[1] Sparse city scaling
+       V         E   Dijk ms    A* ms     BF ms  Dijk set   A* set   Tarjan      MB
+    1000      3668     0.464    0.345       4.8       629      401     0.66     0.6
+    2500      9292     1.058    0.731      13.5      1495      900     2.39     1.7
+    5000     18713     2.626    1.786      42.1      3253     1976     1.89     3.5
+   10000     37672     9.065    5.289     183.1      6386     3757     9.62     7.0
+   25000     94252    10.348    5.090     312.2     14218     7362    16.32    16.7
+   50000    188657    19.544   10.618         -     28450    15715    41.06    33.7
+  100000    377946    43.813   30.909         -     61873    41315    63.27    68.2
+  250000    945689   116.307   74.080         -    152451    92751   198.91   161.4
+
+CSV results written to /home/claude/UrbanRouting/results
+
+[2] Heap vs array Dijkstra: sparse road network vs dense transit network (point-to-point, 5 random pairs)
+  sparse V=  250 E=      885  heap     0.154 ms   array     0.277 ms
+  dense  V=  250 E=    31290  heap     1.187 ms   array     0.969 ms
+  sparse V=  500 E=     1801  heap     0.186 ms   array     0.182 ms
+  dense  V=  500 E=   124768  heap     6.813 ms   array     7.734 ms
+  sparse V= 1000 E=     3651  heap     0.335 ms   array     0.539 ms
+  dense  V= 1000 E=   499548  heap    27.400 ms   array    29.923 ms
+  sparse V= 1500 E=     5528  heap     0.594 ms   array     1.118 ms
+  dense  V= 1500 E=  1123632  heap    32.981 ms   array    28.259 ms
+  sparse V= 2000 E=     7405  heap     0.867 ms   array     5.543 ms
+  dense  V= 2000 E=  1997002  heap    79.769 ms   array    73.592 ms
+
+CSV results written to /home/claude/UrbanRouting/results
+
+[3] Adjacency list vs adjacency matrix (REAL Colombo sub-networks)
+  V=  500: list    0.20 MB vs matrix     1.91 MB | iterate all neighbours: list   0.082 ms vs matrix    0.425 ms | lookup ns: hash 32 scan 54 matrix 12
+  V= 1000: list    0.47 MB vs matrix     7.63 MB | iterate all neighbours: list   0.109 ms vs matrix    1.600 ms | lookup ns: hash 27 scan 57 matrix 17
+  V= 2000: list    0.98 MB vs matrix    30.51 MB | iterate all neighbours: list   0.136 ms vs matrix    6.425 ms | lookup ns: hash 29 scan 60 matrix 23
+  V= 4000: list    1.99 MB vs matrix   122.07 MB | iterate all neighbours: list   0.427 ms vs matrix   23.548 ms | lookup ns: hash 30 scan 77 matrix 24
+  V= 8000: list    3.50 MB vs matrix   488.28 MB | iterate all neighbours: list   0.536 ms vs matrix   88.719 ms | lookup ns: hash 37 scan 88 matrix 29
+
+CSV results written to /home/claude/UrbanRouting/results
+
+[4] Reachability vs travel-time budget (REAL Colombo, source = Town Hall)
+  budget   1 min →     52 nodes in    0.052 ms
+  budget   2 min →    245 nodes in    0.306 ms
+  budget   5 min →   1459 nodes in    2.178 ms
+  budget  10 min →   4946 nodes in    6.967 ms
+  budget  15 min →   9926 nodes in   14.155 ms
+  budget  20 min →  15910 nodes in   29.148 ms
+  budget  30 min →  26372 nodes in   43.948 ms
+  budget  45 min →  38885 nodes in   67.403 ms
+  budget  60 min →  41892 nodes in   58.510 ms
+
+CSV results written to /home/claude/UrbanRouting/results
